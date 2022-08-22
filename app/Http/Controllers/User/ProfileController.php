@@ -6,13 +6,20 @@ use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Redirect;
 use Illuminate\Validation\Rule;
 
 class ProfileController extends Controller
 {
-    public function index(){
-        return view('users.profile');
+    public function __construct()
+    {
+        $this->middleware(['auth']);
+    }
+    public function index(User $user){
+        // dd($id);
+        $this->authorize('update', $user);
+        // $request = Request();
+        // $request->session()->forget('error_message');
+        return view('users.profile', compact('user'));
     }
 
     public function rules(Request $request, $isUsernameUpdate){
@@ -32,15 +39,17 @@ class ProfileController extends Controller
         ]);
     }
 
-    public function store(Request $request){
+    public function store(Request $request, User $user)
+    {
+        $this->authorize('update', $user);
         $validatedData = true;
-        $isUsernameUpdate = $request->username == $request->user()->username;
+        $isUsernameUpdate = $request->username == $user->username;
 
         // Firts have a session in case we can't validate.
-        $request->session()->forget('error_message');
+        // $request->session()->forget('error_message');
         
         // Second have another session in case data isn't touched.
-        if($isUsernameUpdate and auth()->user()->email == $request->email and $request->password == null and auth()->user()->name == $request->name)
+        if($isUsernameUpdate and $user->email == $request->email and $request->password == null and $user->name == $request->name)
         {
             return redirect()->back()->with('info_message', "You didn't edit any of the fields.");
         }
@@ -56,13 +65,18 @@ class ProfileController extends Controller
 
         if($validatedData)
         {
-            User::where('id', $request->user()->id)->update($request->only('name', 'username', 'email'));
+            User::where('id', $user->id)->update($request->only('name', 'username', 'email'));
             
-            $request->password != null ? User::where('id', $request->user()->id)->update([
+            $request->password != null ? User::where('id', $user->id)->update([
                 "password" => Hash::make($request->password),
             ]) : null;
         }
         
-        return redirect()->back()->with('message', 'Successfuly updated profile.');
+        return redirect()->route("profile", $request->username)->with('message', 'Successfuly updated profile.');
+    }
+
+    public function __destruct()
+    {
+        
     }
 }

@@ -31,7 +31,7 @@
             @endguest
             @auth
                 <li class="p-3">
-                    <a href="{{ route('profile') }}">{{ auth()->user()->username }}</a>
+                    <a href="{{ route('profile', ['user' => auth()->user()]) }}">{{ auth()->user()->username }}</a>
                 </li>
                 <li class="p-3">
                     <form action="{{ route('logout') }}" method="post" class="inline">

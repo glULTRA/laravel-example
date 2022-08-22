@@ -7,6 +7,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\PostLikeController;
 use App\Http\Controllers\User\ProfileController;
+use App\Http\Controllers\User\UserPostController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function(){
@@ -27,9 +28,12 @@ Route::post('logout', [LogoutController::class, 'store'])->name('logout');
 Route::get('/posts', [PostController::class, 'index'])->name('posts');
 Route::post('/posts', [PostController::class, 'store']);
 Route::delete('/posts/{post}', [PostController::class, 'destroy'])->name('posts.destroy');
+Route::get('/posts/{post}', [PostController::class, 'show'])->name('posts.show');
 
 Route::post('/posts/{post}/likes', [PostLikeController::class, 'store'])->name('posts.likes');
 Route::delete('/posts/{post}/likes', [PostLikeController::class, 'destroy'])->name('posts.likes');
 
-Route::get('/user/profile', [ProfileController::class, 'index'])->name('profile');
-Route::post('/user/profile', [ProfileController::class, 'store']);
+Route::get('/users/{user:username}/profile', [ProfileController::class, 'index'])->name('profile');
+Route::post('/users/{user:username}/profile', [ProfileController::class, 'store']);
+
+Route::get('/users/{user}/posts', [UserPostController::class, 'index'])->name('users.posts');

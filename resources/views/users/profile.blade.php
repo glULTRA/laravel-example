@@ -5,10 +5,11 @@
 @endsection
 
 @section('content')
+    @CAN('update', $user)
     <div class="flex justify-center">
         <div class="w-8/12 bg-main-500  mt-5 rounded px-4 py-4">
            <!-- This is an example component -->
-           <form action="{{ route('profile') }}" method="POST">
+           <form action="{{ route('profile', $user) }}" method="POST">
                 @csrf 
                 <div class="h-full">
                     <div class="border-b-2 block md:flex">
@@ -67,6 +68,7 @@
                                         element.parentNode.parentNode.removeChild(element.parentNode);
                                         }
                                     </script>
+                                    {{ Request::session()->forget('error_message'); }}
                                 @elseif(session()->has('info_message'))
                                     <div class="text-white px-6 py-4 border-0 rounded relative mb-4 bg-yellow-500">
                                         <span class="text-xl inline-block mr-5 align-middle">
@@ -99,7 +101,7 @@
                                         focus:placeholder-gray-500
                                         focus:bg-white 
                                         focus:border-gray-600  
-                                        focus:outline-none" type="text" value="{{ auth()->user()->name }}" />
+                                        focus:outline-none" type="text" value="{{ $user->name }}" />
                                     </div>
                                     @error('name')
                                         <div class="bg-error-400 text-white rounded-lg px-1 py-1">
@@ -116,7 +118,7 @@
                                     focus:placeholder-gray-500
                                     focus:bg-white 
                                     focus:border-gray-600  
-                                    focus:outline-none" type="text" value="{{ auth()->user()->username }}" />
+                                    focus:outline-none" type="text" value="{{ $user->username }}" />
                                     @error('username')
                                         <div class="bg-error-400 text-white rounded-lg px-1 py-1">
                                             {{ $message }}
@@ -131,7 +133,7 @@
                                     focus:placeholder-gray-500
                                     focus:bg-white 
                                     focus:border-gray-600  
-                                    focus:outline-none" type="email" value="{{ auth()->user()->email }}" />
+                                    focus:outline-none" type="email" value="{{ $user->email }}" />
                                     @error('email')
                                         <div class="bg-error-400 text-white rounded-lg px-1 py-1">
                                             {{ $message }}
@@ -181,4 +183,5 @@
             {{-- End of the example --}}
         </div>
     </div>
+    @endcan
 @endsection

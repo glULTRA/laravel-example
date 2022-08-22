@@ -17,6 +17,13 @@ class PostController extends Controller
             'posts' => $posts
         ]);
     }
+
+    public function show(Post $post){
+        return view('posts.show', [
+            'post' => $post
+        ]);
+    }
+
     public function store(Request $request){
         $this->validate($request, [
             'body' => "required",
@@ -31,6 +38,7 @@ class PostController extends Controller
 
     public function destroy(Post $post){
         // dd($post->body);
+        $this->authorize('delete', $post);
         $post->delete();
         return back();
     }
