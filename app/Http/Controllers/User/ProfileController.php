@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
+use App\Models\PostImage;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -16,7 +17,11 @@ class ProfileController extends Controller
     }
     public function index(User $user){
         // dd($id);
-        $this->authorize('update', $user);
+        try {
+            $this->authorize('visit', $user);
+        } catch (\Throwable $th) {
+            $this->authorize('update', $user);
+        }
         // $request = Request();
         // $request->session()->forget('error_message');
         return view('users.profile', compact('user'));
@@ -36,19 +41,18 @@ class ProfileController extends Controller
                     'regex:/[0-9]/',      // must contain at least one digit
                     // 'regex:/[@$!%*#?&]/', // must contain a special character
                 ] : '',
+                // 'image' => 'image|mimes:jpeg,png,jpg,svg|max:2048',
         ]);
     }
 
     public function store(Request $request, User $user)
     {
+                
         $this->authorize('update', $user);
         $validatedData = true;
         $isUsernameUpdate = $request->username == $user->username;
+        // $isImageUploaded = $request->file('image');
 
-        // Firts have a session in case we can't validate.
-        // $request->session()->forget('error_message');
-        
-        // Second have another session in case data isn't touched.
         if($isUsernameUpdate and $user->email == $request->email and $request->password == null and $user->name == $request->name)
         {
             return redirect()->back()->with('info_message', "You didn't edit any of the fields.");
@@ -66,7 +70,7 @@ class ProfileController extends Controller
         if($validatedData)
         {
             User::where('id', $user->id)->update($request->only('name', 'username', 'email'));
-            
+
             $request->password != null ? User::where('id', $user->id)->update([
                 "password" => Hash::make($request->password),
             ]) : null;

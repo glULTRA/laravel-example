@@ -9,20 +9,36 @@
     <div class="flex justify-center">
         <div class="w-8/12 bg-main-500  mt-5 rounded px-4 py-4">
            <!-- This is an example component -->
-           <form action="{{ route('profile', $user) }}" method="POST">
+           <form action="{{ route('profile', $user) }}" method="POST" enctype="multipart/form-data">
                 @csrf 
                 <div class="h-full">
                     <div class="border-b-2 block md:flex">
+                        {{-- <form action="{{ route('images.add', $user )}} " > --}}
                         <div class="w-full md:w-2/5 p-4 sm:p-6 lg:p-8 bg-main-100 shadow-md">
                             <div class="flex justify-between">
                                 <span class="text-sm block">User Profile</span>
-                                <a href="#" class="-mt-2 text-md  text-white bg-gray-700 rounded-full px-5 py-2 hover:bg-gray-800">Edit</a>
+                                {{-- <button type="submit" class="-mt-2 text-md  text-white bg-gray-700 rounded-full px-5 py-2 hover:bg-gray-800">Save</button> --}}
+                                {{-- <a href="{{ route('images.add') }}"> Save</a> --}}
                             </div>
+                            {{-- Tommorow task will be adding image profile to user and store it to the database. --}}    
                             <span class="text-gray-600">This information is secret so be careful</span>
                             <div class="w-full p-8 mx-2 flex justify-center">
-                                <img id="showImage" class="max-w-xs w-32 items-center border" src="https://images.unsplash.com/photo-1477118476589-bff2c5c4cfbb?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=200&q=200" alt="">                          
+                                {{-- <div class="bg-white px-1 py-1">
+                                    <img id="showImage" class="max-w-xs w-60 items-center" src="https://images.unsplash.com/photo-1477118476589-bff2c5c4cfbb?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=200&q=200" alt="">                          
+                                </div> --}}
+                                    <div class="flex justify-center items-center w-full">
+                                        <label for="image" class="flex flex-col justify-center items-center w-full h-64 bg-gray-50 rounded-lg border-2 border-gray-300 border-dashed cursor-pointer dark:hover:bg-bray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600">
+                                            <div class="flex flex-col justify-center items-center pt-5 pb-6">
+                                                <svg aria-hidden="true" class="mb-3 w-10 h-10 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path></svg>
+                                                <p class="mb-2 text-sm text-gray-500 dark:text-gray-400"><span class="font-semibold">Click to upload</span> or drag and drop</p>
+                                                <p class="text-xs text-gray-500 dark:text-gray-400">SVG, PNG, JPG or GIF (MAX. 800x400px)</p>
+                                            </div>
+                                            <input id="image" name="image"  type="file" class="hidden">
+                                        </label>
+                                    </div> 
+                                </div>
                             </div>
-                        </div>
+                        {{-- </form> --}}
                         <div class="w-full md:w-3/5 p-8 bg-main-100 lg:ml-4 shadow-md">
                             <div class="rounded  shadow p-6">
                                 @if(session()->has('message'))
@@ -179,9 +195,12 @@
                         </div>
                     </div>
                 </div>
-            </form>
+            {{-- </form> --}}
             {{-- End of the example --}}
         </div>
     </div>
+    @endcan
+    @CAN('visit', $user)
+        <x-userprofile :user="$user"/>
     @endcan
 @endsection

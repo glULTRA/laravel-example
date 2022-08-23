@@ -15,4 +15,8 @@ class ProfilePolicy
         $request = Request();
         return $request->user->id === $user->id; 
     }
+
+    public function visit(User $user){
+        return !$this->update($user);
+    }
 }

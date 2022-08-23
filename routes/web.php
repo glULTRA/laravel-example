@@ -6,6 +6,7 @@ use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\PostLikeController;
+use App\Http\Controllers\User\ImageUploadController;
 use App\Http\Controllers\User\ProfileController;
 use App\Http\Controllers\User\UserPostController;
 use Illuminate\Support\Facades\Route;
@@ -37,3 +38,5 @@ Route::get('/users/{user:username}/profile', [ProfileController::class, 'index']
 Route::post('/users/{user:username}/profile', [ProfileController::class, 'store']);
 
 Route::get('/users/{user}/posts', [UserPostController::class, 'index'])->name('users.posts');
+
+Route::get('/images-add', [ImageUploadController::class, 'store'])->name('images.add');

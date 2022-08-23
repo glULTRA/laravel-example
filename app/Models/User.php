@@ -47,6 +47,10 @@ class User extends Authenticatable
         return $this->hasMany(Post::class);
     }
 
+    // public function profile_image(){
+
+    // }
+
     public function likes(){
         return $this->hasMany(Like::class);
     }
