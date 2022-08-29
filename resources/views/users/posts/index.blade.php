@@ -10,7 +10,13 @@
             <div class="bg-main-500 text-white p-6 rounded-lg">
                 @if ($posts->count())
                     @foreach ($posts as $post)
-                        <x-post :post="$post"/>
+                        {{-- <x-post :post="$post"/> --}}
+                        @auth
+                            <div class="mb-4 mt-2">
+                              {{-- @livewire('post-like-counter', ['post'=>$post]) --}}
+                              {{-- <livewire:post-like-counter :post="$post"/>  --}}
+                            </div>
+                        @endauth
                     @endforeach
                     {{ $posts->links() }}
                 @else 

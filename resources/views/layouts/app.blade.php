@@ -4,8 +4,10 @@
     <title>My social</title>
     {{-- <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet"> --}}
     @vite('resources/css/app.css')
+    @livewireStyles
     @yield('style')
     @yield('script')
+
 </head>
 <body class="bg-main-900">
     <nav class="bg-main-500 justify-between flex text-white">
@@ -19,6 +21,11 @@
             <li class="p-3">
                 <a href="{{ route('posts') }}">Posts</a>
             </li>
+            @auth
+            <li class="p-3">
+                <a href="{{ route('friends') }}">Friends</a>
+            </li>
+            @endauth
         </ul>
         <ul class="flex px-4 py-4 font-serif">
             @guest
@@ -43,9 +50,11 @@
         </ul>
     </nav>
 
+    @livewireScripts
     @yield('content')
     <br>
     <br>
     <br>
+
 </body>
 </html>

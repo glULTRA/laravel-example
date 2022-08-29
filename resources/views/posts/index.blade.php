@@ -32,6 +32,12 @@
             @if ($posts->count())
                 @foreach ($posts as $post)
                     <x-post :post="$post" />
+                    @auth
+                        <div class="mb-4 mt-2">
+                              {{-- @livewire('post-like-counter', ['post'=>$post]) --}}
+                              <livewire:post-like-counter :post="$post"/> 
+                        </div>
+                    @endauth
                 @endforeach
                 <br>
                 {{ $posts->links() }}
